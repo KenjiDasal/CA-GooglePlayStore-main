@@ -1,7 +1,7 @@
 const express = require('express');
 const { JsonWebTokenError } = require('jsonwebtoken');
 const app = express();
-const port = 3000;
+const port = 3200;
 require('dotenv').config();
 require('./config/db.js')();
 const jwt = require('jsonwebtoken');
