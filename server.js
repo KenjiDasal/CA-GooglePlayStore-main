@@ -1,57 +1,57 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
+const { JsonWebTokenError } = require('jsonwebtoken');
 const app = express();
-const port = 3001;
-
+const port = 3200;
+const cors = require('cors');
 require('dotenv').config();
-require('./configs/db.js')();
+require('./config/db.js')();
+const jwt = require('jsonwebtoken');
+
+app.use(cors());
 
 app.use(express.json());
 app.set('view engine', 'html');
-
+//Will make it excessable for clients
 app.use(express.static(__dirname + '/views/'));
 
-// custom middleware
+//Custom middleware
 app.use((req, res, next) => {
-
-    console.log(req.headers);
-    let token = null;
-    
-    if(req.headers.authorization) {
-        token = req.headers.authorization.split(' ');
-    }
-
-    console.log(token);
-
-    if (token && token[0] === 'Bearer') {
-        // verify token is valid
-        jwt.verify(token[1], process.env.JWT_SECRET, (err, decoded) => {
-            if(err) {
-                req.user = undefined;
-            }
-
-            req.user = decoded;
-            // next();
-        });
-    }
-    else {
-        console.log('No token');
+  console.log(req.headers);
+  let token = null;
+  if (req.headers.authorization) {
+    token = req.headers.authorization.split(' ');
+  }
+  console.log(token);
+  if (token && token[0] === 'Bearer') {
+    // verify token is valid
+    jwt.verify(token[1], process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
         req.user = undefined;
-    }
-
-    next();
+      }
+      req.user = decoded;
+      next();
+    });
+  } else {
+    console.log('No token');
+    req.user = undefined; //<------ this line
+  }
+  next(); //<------ this line
 });
-///
 
-app.use((req, res, next) => {
-    console.log(req.user);
-    next();
+app.use((req, res, user, next) => {
+  console.log(req, user);
+  next();
 });
 
-app.use('/api/users', require('./routes/users'));
-app.use('/api/directors', require('./routes/directors'));
-app.use('/api/series', require('./routes/series'));
+app.use(express.static(__dirname + '/public/'));
+
+app.use('/api/users', require('./routes/users.js'));
+app.use('/api/genres', require('./routes/genres.js'));
+app.use('/api/apps', require('./routes/apps.js'));
 
 app.listen(port, () => {
-    console.log(`Example app listening on port: ${port}`)
+  console.log(`Example App, listening on port: ${port}`);
 });
+
+
+
