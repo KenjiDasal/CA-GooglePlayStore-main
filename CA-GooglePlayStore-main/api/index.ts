@@ -42,9 +42,9 @@ app.use((req, res, user, next) => {
 
 app.use(express.static(__dirname + '/public/'));
 
-app.use('/api/users', require('./routes/users.js'));
-app.use('/api/genres', require('./routes/genres.js'));
-app.use('/api/apps', require('./routes/apps.js'));
+app.use('/api/users', require('../routes/users.js'));
+app.use('/api/genres', require('../routes/genres.js'));
+app.use('/api/apps', require('../routes/apps.js'));
 
 app.listen(port, () => {
   console.log(`Example App, listening on port: ${port}`);
