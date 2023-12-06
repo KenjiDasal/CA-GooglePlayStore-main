@@ -4,17 +4,16 @@ const appSchema = Schema(
     {
         title: {
             type: String,
-            required: [true, 'make field is required'],
+            required: [true, 'title field is required'],
         },
         type: {
             type: String,
-            required: [true, 'model field is required'],
+            required: [true, 'type field is required'],
         },
         price: {
             type: Number,
-            required: [true, 'year field is required'],
+            required: [true, 'price field is required'],
         },
-        
         image_path: {
             type: String
         },

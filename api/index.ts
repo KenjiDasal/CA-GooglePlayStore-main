@@ -2,12 +2,9 @@ const express = require('express');
 const { JsonWebTokenError } = require('jsonwebtoken');
 const app = express();
 const port = 3200;
-const cors = require('cors');
 require('dotenv').config();
 require('./config/db.js')();
 const jwt = require('jsonwebtoken');
-
-app.use(cors());
 
 app.use(express.json());
 app.set('view engine', 'html');
